@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="row">
+    <mat-form-field>
+      <mat-select [(value)]="current_language">
+        <mat-option #lang *ngFor="let language of languages" (click)="changeLanguage(lang.value)" [value]="language.value">{{ language.view_value }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<router-outlet></router-outlet>

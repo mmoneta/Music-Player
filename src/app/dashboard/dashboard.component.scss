@@ -1,0 +1,121 @@
+$background: #1a1b1b;
+
+.card {
+  min-width: 80%;
+  color: white;
+  background: $background;
+}
+
+a {
+  cursor: pointer;
+}
+
+.mat {
+  &-table {
+    overflow: auto;
+    max-height: 500px;
+  }
+  
+  &-toolbar {
+    background-image: -moz-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
+    background-image: -webkit-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
+    background-image: -ms-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
+    background-image: linear-gradient(270deg, #1e88e5 0%, #5e35b1 100%) !important;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+
+  &-select {
+    text-align: left !important;
+    color: white !important;
+    background-color: white;
+
+    &-content {
+      font-size: 1.2em;
+    }
+  
+    &-arrow, &-value, &-value-text {
+      color: white !important;
+    }
+  }
+
+  &-option {
+    text-align: left;
+  }
+
+  &-card {
+    &:not([class*=mat-elevation-z]) {
+      box-shadow: none !important;
+    }
+    
+    &-title {
+      justify-content: space-around;
+    }
+
+    &-content {
+      min-height: 60vh;
+    }
+  }
+
+  &-line button {
+    padding: 5px;
+    background-color: transparent;
+  
+    &:hover {
+      background-color: rgb(237, 44, 85);
+      color: white;
+    }
+  }
+
+  &-raised-button {
+    background-color: rgb(237,44,85);
+    color: white;
+  }
+
+  &-sidenav {
+    background-color: $background;
+    color: white;
+    padding: 10px;
+  
+    &-container {
+      background-color: $background;
+      width: 100vw;
+      position: absolute;
+      left: 0;
+      display: flex;
+      align-items: center;
+      z-index: 1;
+      overflow: hidden;
+    }
+  }
+
+  &-nav-list {
+    li {
+      padding: 10px 12px;
+      border-radius: 10px;
+  
+      &:hover {
+        background-image: -moz-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
+        background-image: -webkit-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
+        background-image: -ms-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
+        background-image: linear-gradient(270deg, #1e88e5 0%, #5e35b1 100%) !important;
+      }
+    }
+  }
+
+  &-paginator {
+    color: white !important;
+    background: $background !important;
+  
+    &-container *, &-navigation-next, &-icon, &-icon-button, &-range-actions {
+      color: white !important;
+    }
+  }
+  
+  &-form-field * { 
+    color: white !important;
+  }
+}

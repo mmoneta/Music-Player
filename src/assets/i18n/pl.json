@@ -1,0 +1,63 @@
+{
+  "LOGIN" : {
+    "TITLE" : "Logowanie",
+    "USERNAME" : "Nazwa użytkownika",
+    "PASSWORD": "Hasło",
+    "REMEMBER": "Zapamiętaj",
+    "SUBMIT": "Zaloguj się!",
+    "MESSAGE": "Jeśli nie masz konta, zarejestruj się!",
+    "ENTER-USERNAME": "Wprowadź nazwę użytkownika",
+    "ENTER-PASSWORD": "Wprowadź hasło",
+    "USER-UNREGISTERED": "Użytkownik nie został zarejestrowany.",
+    "INCORRECT-PASSWORD": "Niepoprawne hasło"
+  },
+  "REGISTER" : {
+    "TITLE" : "Rejestracja",
+    "EMAIL": "E-mail",
+    "USERNAME" : "Nazwa użytkownika",
+    "PASSWORD": "Hasło",
+    "REPEAT-PASSWORD": "Potwierdź hasło",
+    "SUBMIT": "Zarejestruj się!",
+    "MESSAGE": "Jeśli już masz konto, zaloguj się!",
+    "ENTER-USERNAME": "Wprowadź nazwę użytkownika",
+    "ENTER-EMAIL": "Wprowadź e-mail",
+    "ENTER-PASSWORD": "Wprowadź hasło",
+    "ENTER-REPEAT-PASSWORD": "Powtórz hasło",
+    "USERNAME-BUSY": "Nazwa użytkownika jest zajęta.",
+    "EMAIL-BUSY": "E-mail jest zajęty.",
+    "USER-REGISTERED": "Użytkownik został zarejestrowany."
+  },
+  "DASHBOARD" : {
+    "TITLE" : "Odtwarzacz muzyczny",
+    "CREATOR" : "Utwórz album",
+    "UPLOAD": "Umieść utwory",
+    "SETTINGS" : "Ustawienia",
+    "HELP": "Pomoc",
+    "LOGOUT": "Wyloguj się",
+    "PANEL-TITLE-ALBUM": "Lista utworów",
+    "PANEL-TITLE-ALBUMS": "Lista albumów muzycznych"
+  },
+  "CREATOR" : {
+    "TITLE": "Utwórz nowy album",
+    "NAME": "Nazwa",
+    "ENTER-NAME": "Wprowadź nazwę albumu",
+    "SAVE": "Zapisz",
+    "ALBUM-CREATED": "Album został utworzony.",
+    "ALBUM-EXIST": "Album już istnieje."
+  },
+  "UPLOADER" : {
+    "TITLE": "Umieść swoje utwory",
+    "PERFORMER": "Wykonawca",
+    "UPLOAD": "Umieść",
+    "ENTER-TRACK-NAME": "Wprowadź nazwę utworu",
+    "SELECT-FILE": "Wybierz utwór do przekazania",
+    "FILE-UPLOADED": "Utwór został umieszczony."
+  },
+  "HELPER" : {
+    "TITLE": "Pomoc"
+  },
+  "SETTINGS" : {
+    "LANGUAGE": "Język",
+    "SAVE": "Zapisz"
+  }
+}

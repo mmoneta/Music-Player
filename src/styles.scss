@@ -1,0 +1,81 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+
+body {
+  color: white !important;
+  background-color: #1a1b1b;
+  overflow-x: hidden;
+
+  *:not(.mat-icon):not(.material-icon) {
+    font-family: 'Raleway', sans-serif !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+
+  /* Track */
+  &-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+  
+  /* Handle */
+  &-thumb {
+    background: rgb(237, 44, 85); 
+    border-radius: 10px;
+
+    /* Handle on hover */
+    &:hover {
+      background: #b30000; 
+    }
+  }
+}
+
+h2 {
+  font-weight: bold;  
+}
+
+.form-group, form {
+  border: none !important;
+}
+
+input {
+  padding: 20px !important;
+
+  &.ng-invalid::-webkit-input-placeholder {
+    color: white;
+  }
+}
+
+a {
+  color: white;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.breakline {
+  margin-top: 10px; 
+}
+
+.mat {
+  &-dialog-container {
+    position: relative;
+  }
+}
+
+.ng {
+  &-invalid {
+    border: 1px solid rgb(230, 33, 99);
+    background-color: transparent;
+    color: white;
+  }
+
+  &-valid {
+    border: 1px solid lightgreen;
+    background-color: transparent;
+    color: white;
+  }
+}

@@ -1,0 +1,30 @@
+<div class="close-container">
+  <div class="close-button" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </div>
+</div>
+<div class="title">
+  {{ 'UPLOADER.TITLE' | translate }}
+</div>
+<div class="content-container">
+  <form (ngSubmit)="save()" [formGroup]="uploaderForm" novalidate>
+    <div class="form-group">
+      <select class="form-control" formControlName="album">
+        <option *ngFor="let album of albums" [value]="album">{{ album }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input #trackname type="text" placeholder="{{ 'UPLOADER.ENTER-TRACK-NAME' | translate }}" class="form-control" formControlName="trackname" value="{{ trackname.value }}">
+    </div>
+    <div class="form-group">
+      <button mat-raised-button (click)="openInput()">
+        {{ 'UPLOADER.SELECT-FILE' | translate }}
+      </button>
+      <input #fileInput class="hide" hidden type="file" (change)="onFileChange($event)" formControlName="file">
+    </div>
+    <div class="save-container">
+      <button type="submit" class="save-button">{{ 'UPLOADER.UPLOAD' | translate }}</button>
+    </div>
+  </form>
+</div>
+<simple-notifications></simple-notifications>
