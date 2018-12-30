@@ -25,4 +25,8 @@ export class AlbumService {
       this.store.dispatch(action);
     });
   }
+
+  clearAlbum() {
+    this.store.dispatch({ type: 'CLEAR_ALBUM' });
+  }
 }

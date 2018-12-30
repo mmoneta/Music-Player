@@ -62,7 +62,11 @@ export class AlbumComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.albumService.loadTracks(localStorage.getItem('username'), localStorage.getItem('album'));
     this.subscription = this.tracks.subscribe(
-      tracks => setTimeout(() => this.length = tracks.length, 0),
+      tracks => {
+        setTimeout(() => {
+          this.length = tracks.length;
+        }, 0);
+      },
       error => console.log(error)
     );
   }
@@ -76,5 +80,6 @@ export class AlbumComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.albumService.clearAlbum();
   }
 }
