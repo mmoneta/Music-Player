@@ -12,8 +12,6 @@ export const AlbumReducer = (state: any = [], { type, payload }) => {
       return state.filter(track => {
         return track.token !== payload.token;
       });
-    case 'CLEAR_ALBUM':
-      return [];
     default:
       return state;
   }
