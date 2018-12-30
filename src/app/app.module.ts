@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Http, HttpModule} from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { httpLoaderFactory } from './services/httpLoaderFactory';
+import { httpLoaderFactory } from './_services/httpLoaderFactory';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,19 +30,23 @@ import { AlbumsComponent } from './directives/Collection/Content/albums.componen
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 
-import { MaterialModule } from './services/material.module';
+import { MaterialModule } from './_services/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CarouselComponent, CarouselItemElement } from './directives/Carousel/carousel.component';
 import { CarouselItemDirective } from './directives/Carousel/carousel-item.directive';
 
-import { WINDOW_PROVIDERS } from './services/window.provider';
+import { WINDOW_PROVIDERS } from './_services/window.provider';
 
-import { Language } from './services/language';
+import { Language } from './_services/language';
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
-import { Notifications } from './services/notifications';
+import { Notifications } from './_services/notifications';
+
+import { StoreModule } from '@ngrx/store';
+import { AlbumReducer } from './_reducers/album.reducer';
+import { AlbumService } from './_services/album.service';
 
 
 @NgModule({
@@ -80,9 +84,10 @@ import { Notifications } from './services/notifications';
           deps: [HttpClient]
         }
     }),
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    StoreModule.forRoot({ album: AlbumReducer })
   ],
-  providers: [CookieService, Language, AuthService, AuthGuard, WINDOW_PROVIDERS],
+  providers: [AlbumService, CookieService, Language, AuthService, AuthGuard, WINDOW_PROVIDERS],
   bootstrap: [AppComponent],
   entryComponents: [CreatorComponent, UploaderComponent, HelperComponent, SettingsComponent]
 })

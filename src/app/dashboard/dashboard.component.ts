@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener, ViewEncapsulation } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 
@@ -9,14 +9,15 @@ import { HelperComponent } from '../helper/helper.component';
 import { VisualizationComponent } from '../visualization/visualization.component';
 
 import { AuthService } from '../auth.service';
-import { DialogService } from '../services/dialog.service';
-import { HttpService } from '../services/http.service';
+import { DialogService } from '../_services/dialog.service';
+import { HttpService } from '../_services/http.service';
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.scss']
+  styleUrls: ['dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
@@ -62,7 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.currentPage = 0;
   }
 
-  onAlbumSelect(name) {
+  onAlbumSelect(name: string) {
     localStorage.setItem('album', name);
     this.view = 'album';
 

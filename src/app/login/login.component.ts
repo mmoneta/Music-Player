@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Notifications } from '../services/notifications';
+import { Notifications } from '../_services/notifications';
 
 import { AuthService } from '../auth.service';
-import { Language } from '../services/language';
+import { Language } from '../_services/language';
 
 @Component({
   selector: 'app-login',

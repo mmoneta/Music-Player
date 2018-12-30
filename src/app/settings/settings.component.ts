@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { Language } from '../services/language';
+import { Language } from '../_services/language';
 
 @Component({
   selector: 'app-settings',

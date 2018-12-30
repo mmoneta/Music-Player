@@ -1,8 +1,9 @@
 import { Component, OnInit, EventEmitter, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
-import { Notifications } from '../services/notifications';
-import { Language } from '../services/language';
-import { HttpService } from '../services/http.service';
+import { Notifications } from '../_services/notifications';
+import { Language } from '../_services/language';
+import { HttpService } from '../_services/http.service';
+import { AlbumService } from '../_services/album.service';
 
 @Component({
   selector: 'app-uploader',
@@ -19,11 +20,12 @@ export class UploaderComponent implements OnInit {
   trackname: FormControl;
   file: FormControl;
   selected_file;
-  onClose = new EventEmitter();
+  onClose = new EventEmitter<void>();
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(private http: HttpService,
+    private albumService: AlbumService,
     private _notifications: Notifications,
     private language: Language,
     private cd: ChangeDetectorRef) { }
@@ -91,6 +93,7 @@ export class UploaderComponent implements OnInit {
 
       this.http.post('/album/upload', uploadData).subscribe(
         data => {
+          this.albumService.loadTracks(localStorage.getItem('username'), localStorage.getItem('album'));
           this.uploaderForm.reset();
           const key = `UPLOADER.${data['alert']}`;
           this.language.translate(key).subscribe((value: string) => {

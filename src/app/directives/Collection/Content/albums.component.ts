@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { HttpService } from '../../../services/http.service';
+import { HttpService } from '../../../_services/http.service';
 
 @Component({
   // tslint:disable-next-line:component-selector

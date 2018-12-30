@@ -1,26 +1,26 @@
 $background: #1a1b1b;
 
-.card {
+app-dashboard .card {
   min-width: 80%;
   color: white;
   background: $background;
 }
 
-a {
+app-dashboard a {
   cursor: pointer;
 }
 
-.mat {
+app-dashboard .mat {
   &-table {
     overflow: auto;
     max-height: 500px;
   }
   
   &-toolbar {
-    background-image: -moz-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
-    background-image: -webkit-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
-    background-image: -ms-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
-    background-image: linear-gradient(270deg, #1e88e5 0%, #5e35b1 100%) !important;
+    background-image: -moz-linear-gradient(270deg, #1874c5 0%, #5124ad 100%);
+    background-image: -webkit-linear-gradient(270deg, #1874c5 0%, #5124ad 100%);
+    background-image: -ms-linear-gradient(270deg, #1874c5 0%, #5124ad 100%);
+    background-image: linear-gradient(270deg, #1e88e5 0%, #5e35b1 100%);
     color: white;
     position: absolute;
     top: 0;
@@ -29,16 +29,22 @@ a {
   }
 
   &-select {
-    text-align: left !important;
-    color: white !important;
-    background-color: white;
+    color: white;
 
     &-content {
       font-size: 1.2em;
     }
   
-    &-arrow, &-value, &-value-text {
-      color: white !important;
+    &-arrow {
+      color: white;
+    }
+
+    &-value {
+      color: white;
+
+      &-text {
+        color: white;
+      }
     }
   }
 
@@ -98,24 +104,24 @@ a {
       border-radius: 10px;
   
       &:hover {
-        background-image: -moz-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
-        background-image: -webkit-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
-        background-image: -ms-linear-gradient(270deg, #1874c5 0%, #5124ad 100%) !important;
-        background-image: linear-gradient(270deg, #1e88e5 0%, #5e35b1 100%) !important;
+        background-image: -moz-linear-gradient(270deg, #1874c5 0%, #5124ad 100%);
+        background-image: -webkit-linear-gradient(270deg, #1874c5 0%, #5124ad 100%);
+        background-image: -ms-linear-gradient(270deg, #1874c5 0%, #5124ad 100%);
+        background-image: linear-gradient(270deg, #1e88e5 0%, #5e35b1 100%);
       }
     }
   }
 
   &-paginator {
-    color: white !important;
-    background: $background !important;
+    color: white;
+    background: $background;
   
     &-container *, &-navigation-next, &-icon, &-icon-button, &-range-actions {
-      color: white !important;
+      color: white;
     }
   }
   
   &-form-field * { 
-    color: white !important;
+    color: white;
   }
 }

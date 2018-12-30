@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatSelectModule } from '@angular/material/select';
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { Language } from './services/language';
+import { Language } from './_services/language';
 
 @Component({
   selector: 'app-root',
