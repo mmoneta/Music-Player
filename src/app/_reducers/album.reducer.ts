@@ -1,8 +1,8 @@
 export const AlbumReducer = (state: any = [], { type, payload }) => {
   switch (type) {
-    case 'ADD_TRACK':
+    case 'ADD_TRACKS':
       return payload;
-    case 'CREATE_TRACK':
+    case 'ADD_NEW_TRACK':
       return [...state, payload];
     case 'UPDATE_TRACK':
       return state.map(track => {

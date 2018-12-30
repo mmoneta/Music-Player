@@ -19,7 +19,7 @@ export class AlbumService {
   loadTracks(username: string, name: string)  {
     return this.http.post('/album/list', { 'username': username, 'album': name })
     .map((payload: String[]) => {
-      return { type: 'ADD_TRACK', payload: payload };
+      return { type: 'ADD_TRACKS', payload: payload };
     })
     .subscribe((action) => {
       this.store.dispatch(action);
