@@ -121,7 +121,11 @@ app-dashboard .mat {
     }
   }
   
-  &-form-field * { 
+  &-form-field { 
     color: white;
+
+    &-ripple, &-underline {
+      color: white;
+    }
   }
 }

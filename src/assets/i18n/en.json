@@ -51,6 +51,7 @@
     "UPLOAD": "Upload",
     "ENTER-TRACK-NAME": "Enter track name",
     "SELECT-FILE": "Select track to upload",
+    "FILE-NOT-SELECTED": "Track has not selected.",
     "FILE-UPLOADED": "Track has been uploaded."
   },
   "HELPER" : {

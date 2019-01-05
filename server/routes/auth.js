@@ -9,13 +9,14 @@ __mainDir = path.join(__dirname, '..');
 
 /* LOGIN USER */
 router.post('/login', function (req, res) {
-  db.Operations.SelectWhere(db.Models.User, 'username', req.body.username).then(data => {
+  db.Operations.SelectWhere(db.Models.User, { username: req.body.username }).then(data => {
     if (data.length > 0) {
-      var [{ _id, password }] = data;
+      const [{ _id, password }] = data;
+      
       bcrypt.compare(req.body.password, password, function(err, match) {
         if (match) {
           // Passwords match
-          var token = jwt.sign({ userID: _id }, 'secret', { expiresIn: '2h' });
+          const token = jwt.sign({ userID: _id }, 'secret', { expiresIn: '2h' });
           res.send({ access_token: token });
         }
         else {
@@ -31,26 +32,28 @@ router.post('/login', function (req, res) {
 
 /* REGISTER USER */
 router.post('/register', function (req, res) {
-  db.Operations.SelectWhere(db.Models.User, 'username', req.body.username).then(data => {
+  const { username, password, email } = req.body;
+
+  db.Operations.SelectWhere(db.Models.User, { username: username }).then(data => {
     if (data.length > 0)
       res.send({ alert: 'USERNAME-BUSY' });
     else {
-      db.Operations.SelectWhere(db.Models.User, 'email', req.body.email).then(data => {
+      db.Operations.SelectWhere(db.Models.User, { email: email }).then(data => {
         if (data.length > 0)
           res.send({ alert: 'EMAIL-BUSY' });
         else {
-          bcrypt.hash(req.body.password, 10, function(err, hash) {
+          bcrypt.hash(password, 10, function(err, hash) {
             const user = new db.Models.User({
-              username: req.body.username,
+              username: username,
               password: hash,
-              email: req.body.email
+              email: email
             });
 
             user.validate(err => console.log(err));
 
             db.Operations.InsertOne(user).catch(console.error);
 
-            const path = `${__mainDir}/uploads/${req.body.username}`;
+            const path = `${__mainDir}/uploads/${username}`;
             filesystem.create_folder(path).catch(console.error);
 
             res.send({ alert: 'USER-REGISTERED', reset: true });

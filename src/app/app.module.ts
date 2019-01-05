@@ -48,7 +48,6 @@ import { StoreModule } from '@ngrx/store';
 import { AlbumReducer } from './_reducers/album.reducer';
 import { AlbumService } from './_services/album.service';
 
-
 @NgModule({
   declarations: [
     AppComponent,

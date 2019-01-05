@@ -1,13 +1,11 @@
 const express = require('express'),
 router = express.Router(),
-path = require('path'),
-filesystem = require('../services/filesystem'),
-__mainDir = path.join(__dirname, '..');
+db = require('../database/db');
 
 /* CREATE OF USER'S ALBUMS */
 router.post('/list', function (req, res) {
-  const path = `${__mainDir}/uploads/${req.body.username}`;
-  filesystem.read_directory(path).then(albums => res.send(albums)).catch(console.error);
+  const { username } = req.body;
+  db.Operations.SelectWhere(db.Models.Album, { username: username }).then(albums => res.send(albums));
 });
 
 module.exports = router;

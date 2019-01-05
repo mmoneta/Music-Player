@@ -8,7 +8,7 @@ import { Language } from '../_services/language';
 @Component({
   selector: 'app-creator',
   templateUrl: './creator.component.html',
-  styleUrls: ['./creator.component.scss']
+  styleUrls: ['./creator.component.scss', './creator.responsive.component.scss']
 })
 
 export class CreatorComponent implements OnInit {
@@ -28,7 +28,8 @@ export class CreatorComponent implements OnInit {
   createFormControls(): void {
     this.name = new FormControl('', [
       Validators.required,
-      Validators.minLength(3)
+      Validators.minLength(3),
+      Validators.pattern('^[a-zA-ZĄĆĘŁŃÓŚŹŻąćęłńóśźż0-9-_ ]+$')
     ]);
   }
 

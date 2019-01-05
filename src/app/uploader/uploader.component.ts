@@ -50,7 +50,8 @@ export class UploaderComponent implements OnInit {
     ]);
     this.trackname = new FormControl('', [
       Validators.required,
-      Validators.minLength(4)
+      Validators.minLength(4),
+      Validators.pattern('^[a-zA-ZĄĆĘŁŃÓŚŹŻąćęłńóśźż0-9-_ ]+$')
     ]);
     this.file = new FormControl('', [
       Validators.required
@@ -104,6 +105,11 @@ export class UploaderComponent implements OnInit {
           console.log('Error', error);
         }
       );
+    } else if (!this.selected_file) {
+      const key = 'UPLOADER.FILE-NOT-SELECTED';
+      this.language.translate(key).subscribe((value: string) => {
+        this._notifications.open('Status', value, 'info');
+      });
     }
   }
 

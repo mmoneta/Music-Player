@@ -51,6 +51,7 @@
     "UPLOAD": "Umieść",
     "ENTER-TRACK-NAME": "Wprowadź nazwę utworu",
     "SELECT-FILE": "Wybierz utwór do przekazania",
+    "FILE-NOT-SELECTED": "Utwór nie został wybrany.",
     "FILE-UPLOADED": "Utwór został umieszczony."
   },
   "HELPER" : {

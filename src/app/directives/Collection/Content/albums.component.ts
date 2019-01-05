@@ -7,9 +7,9 @@ import { HttpService } from '../../../_services/http.service';
   exportAs: 'albums',
   template: `
     <mat-list>
-      <mat-list-item *ngFor="let album of albums" class="album" (click)="open_album(album)">
+      <mat-list-item *ngFor="let album of albums" class="album" (click)="open_album(album.folder)">
         <mat-icon mat-list-icon>album</mat-icon>
-        <h4 class="album-header-name" mat-line>{{ album }}</h4>
+        <h4 class="album-header-name" mat-line>{{ album.name }}</h4>
         <mat-divider [vertical]="true"></mat-divider>
       </mat-list-item>
     </mat-list>

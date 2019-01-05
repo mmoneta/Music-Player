@@ -5,6 +5,7 @@ path = require('path'),
 favicon = require('serve-favicon'),
 logger = require('morgan'),
 bodyParser = require('body-parser'),
+filesystem = require('./services/filesystem'),
 auth = require('./routes/auth'),
 album = require('./routes/album'),
 albums = require('./routes/albums'),
@@ -14,6 +15,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.static(path.join(__mainDir, 'dist/Music-Player')));
+app.use(express.static(path.join(__mainDir, '/server/uploads')));
 app.use('/users', express.static(path.join(__mainDir, 'dist/Music-Player')));
 app.use('/auth', auth);
 app.use('/album', album);
@@ -21,6 +23,10 @@ app.use('/albums', albums);
 
 // Routing
 app.get('*', function(req, res) {
+  if (req.url.indexOf('/uploads') !== -1) {
+    const path = `server/${req.url}`;
+    return filesystem.create_read_stream(res, path);
+  }
   res.sendFile(`${__mainDir}/dist/Music-Player/index.html`);
 });
 

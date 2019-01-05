@@ -4,11 +4,12 @@ import { Store, select } from '@ngrx/store';
 import { HttpService } from './http.service';
 import { AppStore } from '../app.store';
 import 'rxjs/add/operator/map';
+import { Album } from '../_models/album';
 
 @Injectable()
 export class AlbumService {
   // Redux based variables
-  tracks: Observable<Array<String>>;
+  tracks: Observable<Array<Album>>;
 
   constructor(private http: HttpService,
     private store: Store<AppStore>

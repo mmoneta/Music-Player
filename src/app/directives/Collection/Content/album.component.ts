@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 import { AlbumService } from '../../../_services/album.service';
+import { Album } from '../../../_models/album';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -8,12 +9,13 @@ import { AlbumService } from '../../../_services/album.service';
   exportAs: 'album',
   template: `
     <mat-list>
-      <mat-list-item *ngFor="let track of (tracks | async)" class="track" (click)="open_track(track)">
+      <mat-list-item *ngFor="let track of (tracks | async)" class="track" (click)="open_track(track.file)">
         <mat-icon mat-list-icon>music_note</mat-icon>
-        <h4 class="track-header-name" mat-line>{{ track }}</h4>
+        <h4 class="track-header-name" mat-line>{{ track.name }}</h4>
         <mat-divider [vertical]="true"></mat-divider>
       </mat-list-item>
     </mat-list>
+    <audio controls></audio>
   `,
   styles: [`
     .mat-list-item {
@@ -31,6 +33,10 @@ import { AlbumService } from '../../../_services/album.service';
 
     .track-header-name {
       padding: 5px;
+    }
+
+    audio {
+      display: none;
     }
   `]
 })
@@ -52,16 +58,23 @@ export class AlbumComponent implements OnInit, OnDestroy {
 
   @Input() pageSize: number;
   @Input() pageIndex: number;
-  tracks: Observable<Array<String>>;
-  private subscription: Subscription;
+
+  tracks: Observable<Array<Album>>;
+  private tracksSubscription: Subscription;
+  private keyboardSubscription: Subscription;
+
+  audioElement;
 
   constructor(private albumService: AlbumService) {
     this.tracks = albumService.tracks;
   }
 
   ngOnInit() {
+    [this.audioElement] = Array.from(document.getElementsByTagName('audio'));
+
     this.albumService.loadTracks(localStorage.getItem('username'), localStorage.getItem('album'));
-    this.subscription = this.tracks.subscribe(
+
+    this.tracksSubscription = this.tracks.subscribe(
       tracks => {
         setTimeout(() => {
           this.length = tracks.length;
@@ -69,17 +82,33 @@ export class AlbumComponent implements OnInit, OnDestroy {
       },
       error => console.log(error)
     );
+
+    this.keyboardSubscription = fromEvent(document, 'keydown').subscribe(
+      (e: KeyboardEvent) => {
+        if (e.keyCode === 32) {
+          switch (this.audioElement.paused) {
+            case false:
+              this.audioElement.pause();
+              break;
+            case true:
+              this.audioElement.play();
+              break;
+          }
+        }
+      },
+      error => console.log(error)
+    );
   }
 
   open_track(name: string): void {
-    const audio = document.createElement('audio');
-    audio.src = `http://localhost:3000/server/uploads/mmoneta/Andrzej_Piaseczny/${name}`;
-    document.body.appendChild(audio);
-    audio.play();
+    this.audioElement.src = `uploads/${localStorage.getItem('username')}/${localStorage.getItem('album')}/${name}`;
+    this.audioElement.load();
+    this.audioElement.play();
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.tracksSubscription.unsubscribe();
+    this.keyboardSubscription.unsubscribe();
     this.albumService.clearAlbum();
   }
 }
