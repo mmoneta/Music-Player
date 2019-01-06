@@ -29,13 +29,12 @@
   height: 30%;
   position: absolute;
   left: 0;
-  top: 50%;
-  margin: -15% auto;
-  display: none;
+  top: 35%;
   cursor: pointer;
   opacity: 0.8;
   -webkit-user-select: none;
   user-select: none;
+  z-index: 2;
 
   &:hover {
     opacity: 1;

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Observable, Subscription, fromEvent } from 'rxjs';
 import { Howl } from 'howler';
 
@@ -8,7 +8,7 @@ import { Howl } from 'howler';
   templateUrl: './visualization.component.html',
   styleUrls: ['./visualization.component.scss']
 })
-export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class VisualizationComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input() src: string;
   sound: any;
@@ -20,6 +20,7 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
   keyboardSubscription: Subscription;
 
   @ViewChild('view') view: ElementRef;
+  @ViewChild('waveform') waveform: ElementRef;
   @ViewChild('progress') progress: ElementRef;
   @ViewChild('playBtn') playBtn: ElementRef;
   @ViewChild('pauseBtn') pauseBtn: ElementRef;
@@ -35,7 +36,7 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
 
   constructor() {}
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.volumeBtn.nativeElement.addEventListener('click', () => {
       this.toggleVolume();
     });
@@ -65,12 +66,13 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
     this.volume.nativeElement.addEventListener('mousemove', this.move.bind(this));
     this.volume.nativeElement.addEventListener('touchmove', this.move.bind(this));
 
-    this.bar.nativeElement.addEventListener('click', (event) => {
+    this.waveform.nativeElement.addEventListener('click', (event) => {
       const x = event.clientX || event.touches[0].clientX,
       layerX = x - this.view.nativeElement.getBoundingClientRect().left,
       second = (layerX / parseFloat(this.view.nativeElement.clientWidth)) * this.sound._duration;
 
       this.sound.seek(second);
+      this.saveSeek = second;
     });
 
     this.keyboardSubscription = fromEvent(document, 'keydown').subscribe(
@@ -237,14 +239,14 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
 
     // Update the display on the slider.
     const barWidth = (val * 90) / 100,
-    sliderBtnOffset = this.view.nativeElement.clientWidth * barWidth + this.view.nativeElement.clientWidth * 0.05 - 25;
+    sliderBtnOffset = this.view.nativeElement.clientWidth * barWidth + this.view.nativeElement.clientWidth * 0.05 + 25;
 
     this.barFull.nativeElement.style.width = `${(barWidth * 100)}%`;
     this.sliderBtn.nativeElement.style.left = `${sliderBtnOffset}px`;
   }
 
   ngOnDestroy() {
-    this.sound.stop();
+    // this.sound.stop();
     this.keyboardSubscription.unsubscribe();
   }
 }
