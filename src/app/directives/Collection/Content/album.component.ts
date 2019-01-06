@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription, fromEvent } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AlbumService } from '../../../_services/album.service';
 import { Album } from '../../../_models/album';
 
@@ -8,6 +8,7 @@ import { Album } from '../../../_models/album';
   selector: 'album',
   exportAs: 'album',
   template: `
+    <visualization [track]="track"></visualization>
     <mat-list>
       <mat-list-item *ngFor="let track of (tracks | async)" class="track" (click)="open_track(track.file)">
         <mat-icon mat-list-icon>music_note</mat-icon>
@@ -15,7 +16,6 @@ import { Album } from '../../../_models/album';
         <mat-divider [vertical]="true"></mat-divider>
       </mat-list-item>
     </mat-list>
-    <audio controls></audio>
   `,
   styles: [`
     .mat-list-item {
@@ -33,10 +33,6 @@ import { Album } from '../../../_models/album';
 
     .track-header-name {
       padding: 5px;
-    }
-
-    audio {
-      display: none;
     }
   `]
 })
@@ -61,17 +57,13 @@ export class AlbumComponent implements OnInit, OnDestroy {
 
   tracks: Observable<Array<Album>>;
   private tracksSubscription: Subscription;
-  private keyboardSubscription: Subscription;
-
-  audioElement;
+  track: string;
 
   constructor(private albumService: AlbumService) {
     this.tracks = albumService.tracks;
   }
 
   ngOnInit() {
-    [this.audioElement] = Array.from(document.getElementsByTagName('audio'));
-
     this.albumService.loadTracks(localStorage.getItem('username'), localStorage.getItem('album'));
 
     this.tracksSubscription = this.tracks.subscribe(
@@ -82,33 +74,14 @@ export class AlbumComponent implements OnInit, OnDestroy {
       },
       error => console.log(error)
     );
-
-    this.keyboardSubscription = fromEvent(document, 'keydown').subscribe(
-      (e: KeyboardEvent) => {
-        if (e.keyCode === 32) {
-          switch (this.audioElement.paused) {
-            case false:
-              this.audioElement.pause();
-              break;
-            case true:
-              this.audioElement.play();
-              break;
-          }
-        }
-      },
-      error => console.log(error)
-    );
   }
 
   open_track(name: string): void {
-    this.audioElement.src = `uploads/${localStorage.getItem('username')}/${localStorage.getItem('album')}/${name}`;
-    this.audioElement.load();
-    this.audioElement.play();
+    this.track = `uploads/${localStorage.getItem('username')}/${localStorage.getItem('album')}/${name}`;
   }
 
   ngOnDestroy() {
     this.tracksSubscription.unsubscribe();
-    this.keyboardSubscription.unsubscribe();
     this.albumService.clearAlbum();
   }
 }

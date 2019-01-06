@@ -1,12 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
 import { NgModule } from '@angular/core';
-import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
-import { map, filter, switchMap } from 'rxjs/operators';
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { Http, HttpModule} from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { httpLoaderFactory } from './_services/httpLoaderFactory';
 
@@ -20,12 +16,12 @@ import { HelperComponent } from './helper/helper.component';
 import { CreatorComponent } from './creator/creator.component';
 import { UploaderComponent } from './uploader/uploader.component';
 import { SettingsComponent } from './settings/settings.component';
-import { VisualizationComponent } from './visualization/visualization.component';
 
 import { AlbumHeaderComponent } from './directives/Collection/Header/album-header.component';
 import { AlbumsHeaderComponent } from './directives/Collection/Header/albums-header.component';
 import { AlbumComponent } from './directives/Collection/Content/album.component';
 import { AlbumsComponent } from './directives/Collection/Content/albums.component';
+import { VisualizationComponent } from './Visualization/visualization.component';
 
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';

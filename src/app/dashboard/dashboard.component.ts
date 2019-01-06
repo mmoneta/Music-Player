@@ -6,7 +6,6 @@ import { CreatorComponent } from '../creator/creator.component';
 import { UploaderComponent } from '../uploader/uploader.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { HelperComponent } from '../helper/helper.component';
-import { VisualizationComponent } from '../visualization/visualization.component';
 
 import { AuthService } from '../auth.service';
 import { DialogService } from '../_services/dialog.service';
