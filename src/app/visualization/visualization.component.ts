@@ -1,6 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Observable, Subscription, fromEvent } from 'rxjs';
-import { WINDOW } from './../_services/window.provider';
 import { Howl } from 'howler';
 
 @Component({
@@ -34,7 +33,7 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
   @ViewChild('barFull') barFull: ElementRef;
   @ViewChild('loading') loading: ElementRef;
 
-  constructor(@Inject(WINDOW) private window: Window) {}
+  constructor() {}
 
   ngAfterViewInit() {
     this.volumeBtn.nativeElement.addEventListener('click', () => {
@@ -66,14 +65,22 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
     this.volume.nativeElement.addEventListener('mousemove', this.move.bind(this));
     this.volume.nativeElement.addEventListener('touchmove', this.move.bind(this));
 
+    this.bar.nativeElement.addEventListener('click', (event) => {
+      const x = event.clientX || event.touches[0].clientX,
+      layerX = x - this.view.nativeElement.getBoundingClientRect().left,
+      second = (layerX / parseFloat(this.view.nativeElement.clientWidth)) * this.sound._duration;
+
+      this.sound.seek(second);
+    });
+
     this.keyboardSubscription = fromEvent(document, 'keydown').subscribe(
       (e: KeyboardEvent) => {
         switch (e.keyCode) {
           case 32:
             if (this.sound.playing()) {
-              this.sound.pause();
+              this.pause();
             } else {
-              this.sound.play();
+              this.play();
             }
             break;
         }
@@ -83,89 +90,96 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnChanges() {
-    if (this.src) {
-      this.sound = new Howl({
-        src: [this.src],
-        format: ['mp3'],
-        onplay: () => {
-          // Display the duration.
-          this.duration = this.formatTime(Math.round(this.sound._duration));
-
-          // Start updating the progress of the track.
-          requestAnimationFrame(this.step.bind(this));
-
-          // Start the wave animation if we have already loaded
-          // wave.container.style.display = 'block';
-          // this.bar.nativeElement.style.display = 'none';
-          this.playBtn.nativeElement.style.display = 'none';
-          this.pauseBtn.nativeElement.style.display = 'block';
-        },
-        onload: () => {
-          // Start the wave animation.
-          // wave.container.style.display = 'block';
-          // this.bar.nativeElement.style.display = 'none';
-          this.loading.nativeElement.style.display = 'none';
-        },
-        onend: () => {
-          // Stop the wave animation.
-          // wave.container.style.display = 'none';
-          // this.bar.nativeElement.style.display = 'block';
-          // this.skip('next');
-        },
-        onpause: () => {
-          // Stop the wave animation.
-          // wave.container.style.display = 'none';
-          // this.bar.nativeElement.style.display = 'block';
-        },
-        onstop: () => {
-          // Stop the wave animation.
-          // wave.container.style.display = 'none';
-          // this.bar.nativeElement.style.display = 'block';
-        },
-        onseek: () => {
-          // Start upating the progress of the track.
-          requestAnimationFrame(this.step.bind(this));
-        }
-      });
-
-      this.sound.play();
-
-      const analyser = Howler.ctx.createAnalyser();
-
-      // Connect master gain to analyzer
-      Howler.masterGain.connect(analyser);
-
-      // Connect analyzer to destination
-      analyser.connect(Howler.ctx.destination);
-
-      // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
-      analyser.fftSize = 2048;
-      const bufferLength = analyser.frequencyBinCount,
-      dataArray = new Uint8Array(bufferLength);
-
-      // Get the Data array
-      analyser.getByteTimeDomainData(dataArray);
-
-      // Display array on time each 3 sec (just to debug)
-      setInterval(() => {
-        analyser.getByteTimeDomainData(dataArray);
-        console.dir(dataArray);
-      }, 3000);
+    if (this.src && !this.sound) {
+      this.setTrack();
+    } else if (this.sound) {
+      this.sound.stop();
+      this.setTrack();
     }
+  }
+
+  setTrack() {
+    this.sound = new Howl({
+      src: [this.src],
+      format: ['mp3'],
+      onplay: () => {
+        // Display the duration.
+        this.duration = this.formatTime(Math.round(this.sound._duration));
+
+        // Start updating the progress of the track.
+        requestAnimationFrame(this.step.bind(this));
+
+        // Start the wave animation if we have already loaded
+        // wave.container.style.display = 'block';
+        // this.bar.nativeElement.style.display = 'none';
+        this.playBtn.nativeElement.style.display = 'none';
+        this.pauseBtn.nativeElement.style.display = 'block';
+      },
+      onload: () => {
+        // Start the wave animation.
+        // wave.container.style.display = 'block';
+        // this.bar.nativeElement.style.display = 'none';
+        this.loading.nativeElement.style.display = 'none';
+      },
+      onend: () => {
+        // Stop the wave animation.
+        // wave.container.style.display = 'none';
+        // this.bar.nativeElement.style.display = 'block';
+        // this.skip('next');
+      },
+      onpause: () => {
+        // Stop the wave animation.
+        // wave.container.style.display = 'none';
+        // this.bar.nativeElement.style.display = 'block';
+      },
+      onstop: () => {
+        // Stop the wave animation.
+        // wave.container.style.display = 'none';
+        // this.bar.nativeElement.style.display = 'block';
+      },
+      onseek: () => {
+        // Start upating the progress of the track.
+        requestAnimationFrame(this.step.bind(this));
+      }
+    });
+
+    this.sound.play();
+
+    const analyser = Howler.ctx.createAnalyser();
+
+    // Connect master gain to analyzer
+    Howler.masterGain.connect(analyser);
+
+    // Connect analyzer to destination
+    analyser.connect(Howler.ctx.destination);
+
+    // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
+    analyser.fftSize = 2048;
+    const bufferLength = analyser.frequencyBinCount,
+    dataArray = new Uint8Array(bufferLength);
+
+    // Get the Data array
+    analyser.getByteTimeDomainData(dataArray);
+
+    // Display array
+    setInterval(() => {
+      analyser.getByteTimeDomainData(dataArray);
+      console.dir(dataArray);
+    }, 3000);
   }
 
   formatTime(secs: number): string {
     const minutes = Math.floor(secs / 60) || 0,
     seconds = (secs - minutes * 60) || 0;
 
-    return `${minutes}:${(seconds < 10 ? '0' : '') + seconds}`;
+    return `${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
   }
 
   play(): void {
     if (this.sound) {
       // Resume the sound.
       this.sound.play();
-      this.sound.seek(30);
+      this.sound.seek(this.saveSeek);
 
       // Show the play button.
       this.playBtn.nativeElement.style.display = 'none';
@@ -210,8 +224,7 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
   move(event) {
     if (this.sliderDown) {
       const x = event.clientX || event.touches[0].clientX,
-      startX = this.view.nativeElement.clientWidth * 0.05,
-      layerX = x - startX,
+      layerX = x - this.view.nativeElement.getBoundingClientRect().left,
       per = Math.min(1, Math.max(0, layerX / parseFloat(this.barEmpty.nativeElement.scrollWidth)));
 
       this.changeVolume(per);
@@ -231,6 +244,7 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnDestroy() {
+    this.sound.stop();
     this.keyboardSubscription.unsubscribe();
   }
 }
