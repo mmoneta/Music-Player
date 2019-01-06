@@ -1,4 +1,4 @@
-#field {
+#view {
   position: relative;
   border-radius: 15px;
   color: white;
@@ -36,9 +36,10 @@
   opacity: 0.8;
   -webkit-user-select: none;
   user-select: none;
-}
-#waveform:hover {
-  opacity: 1;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 #bar {
@@ -63,19 +64,21 @@
 }
 
 /* Controls */
-.controlsOuter {
-  position: absolute;
-  width: 100%;
-  height: 70px;
-  bottom: 3%;
-}
+.controls {
+  &Outer {
+    position: absolute;
+    width: 100%;
+    height: 70px;
+    bottom: 3%;
+  }
 
-.controlsInner {
-  position: absolute;
-  width: 340px;
-  height: 70px;
-  left: 50%;
-  margin: 0 -170px;
+  &Inner {
+    position: absolute;
+    width: 340px;
+    height: 70px;
+    left: 50%;
+    margin: 0 -170px;
+  }
 }
 
 .btn {
@@ -87,9 +90,10 @@
   -webkit-user-select: none;
   user-select: none;
   z-index: 2;
-}
-.btn:hover {
-  opacity: 1;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 #playBtn {
@@ -170,15 +174,17 @@
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.33);
 }
 
-#barEmpty {
-  width: 90%;
-  opacity: 0.5;
-  box-shadow: none;
-  cursor: pointer;
-}
+#bar {
+  &Empty {
+    width: 90%;
+    opacity: 0.5;
+    box-shadow: none;
+    cursor: pointer;
+  }
 
-#barFull {
-  width: 90%;
+  &Full {
+    width: 90%;
+  }
 }
 
 #sliderBtn {
@@ -195,16 +201,18 @@
 }
 
 /* Fade-In */
-.fadeout {
-  -webkit-animation: fadeout 0.5s;
-  -ms-animation: fadeout 0.5s;
-  animation: fadeout 0.5s;
-}
+.fade {
+  &out {
+    -webkit-animation: fadeout 0.5s;
+    -ms-animation: fadeout 0.5s;
+    animation: fadeout 0.5s;
+  }
 
-.fadein {
-  -webkit-animation: fadein 0.5s;
-  -ms-animation: fadein 0.5s;
-  animation: fadein 0.5s;
+  &in {
+    -webkit-animation: fadein 0.5s;
+    -ms-animation: fadein 0.5s;
+    animation: fadein 0.5s;
+  }
 }
 
 @keyframes fadein {

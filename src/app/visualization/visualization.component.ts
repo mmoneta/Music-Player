@@ -11,14 +11,16 @@ import { Howl } from 'howler';
 })
 export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestroy {
 
-  @Input() track: string;
+  @Input() src: string;
   sound: any;
   timer = '0:00';
   duration = '0:00';
   sliderDown: boolean;
+  saveSeek: any;
 
   keyboardSubscription: Subscription;
 
+  @ViewChild('view') view: ElementRef;
   @ViewChild('progress') progress: ElementRef;
   @ViewChild('playBtn') playBtn: ElementRef;
   @ViewChild('pauseBtn') pauseBtn: ElementRef;
@@ -81,10 +83,10 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnChanges() {
-    if (this.track) {
+    if (this.src) {
       this.sound = new Howl({
-        src: [this.track],
-        html5: true,
+        src: [this.src],
+        format: ['mp3'],
         onplay: () => {
           // Display the duration.
           this.duration = this.formatTime(Math.round(this.sound._duration));
@@ -104,59 +106,88 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
           // this.bar.nativeElement.style.display = 'none';
           this.loading.nativeElement.style.display = 'none';
         },
-        onend: function() {
+        onend: () => {
           // Stop the wave animation.
           // wave.container.style.display = 'none';
           // this.bar.nativeElement.style.display = 'block';
-          this.skip('next');
+          // this.skip('next');
         },
-        onpause: function() {
-          // Stop the wave animation.
-          // wave.container.style.display = 'none';
-          // this.bar.nativeElement.style.display = 'block';
-        },
-        onstop: function() {
+        onpause: () => {
           // Stop the wave animation.
           // wave.container.style.display = 'none';
           // this.bar.nativeElement.style.display = 'block';
         },
-        onseek: function() {
+        onstop: () => {
+          // Stop the wave animation.
+          // wave.container.style.display = 'none';
+          // this.bar.nativeElement.style.display = 'block';
+        },
+        onseek: () => {
           // Start upating the progress of the track.
           requestAnimationFrame(this.step.bind(this));
         }
       });
 
       this.sound.play();
+
+      const analyser = Howler.ctx.createAnalyser();
+
+      // Connect master gain to analyzer
+      Howler.masterGain.connect(analyser);
+
+      // Connect analyzer to destination
+      analyser.connect(Howler.ctx.destination);
+
+      // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
+      analyser.fftSize = 2048;
+      const bufferLength = analyser.frequencyBinCount,
+      dataArray = new Uint8Array(bufferLength);
+
+      // Get the Data array
+      analyser.getByteTimeDomainData(dataArray);
+
+      // Display array on time each 3 sec (just to debug)
+      setInterval(() => {
+        analyser.getByteTimeDomainData(dataArray);
+        console.dir(dataArray);
+      }, 3000);
     }
   }
 
-  formatTime(secs) {
+  formatTime(secs: number): string {
     const minutes = Math.floor(secs / 60) || 0,
     seconds = (secs - minutes * 60) || 0;
 
     return `${minutes}:${(seconds < 10 ? '0' : '') + seconds}`;
   }
 
-  play() {
-    // Pause the sound.
-    this.sound.play();
+  play(): void {
+    if (this.sound) {
+      // Resume the sound.
+      this.sound.play();
+      this.sound.seek(30);
 
-    // Show the play button.
-    this.playBtn.nativeElement.style.display = 'none';
-    this.pauseBtn.nativeElement.style.display = 'block';
+      // Show the play button.
+      this.playBtn.nativeElement.style.display = 'none';
+      this.pauseBtn.nativeElement.style.display = 'block';
+    }
   }
 
-  pause() {
-    // Pause the sound.
-    this.sound.pause();
+  pause(): void {
+    if (this.sound) {
+      // Pause the sound.
+      this.saveSeek = this.sound.seek() || 0;
+      this.sound.pause();
 
-    // Show the play button.
-    this.playBtn.nativeElement.style.display = 'block';
-    this.pauseBtn.nativeElement.style.display = 'none';
+      // Show the pause button.
+      this.playBtn.nativeElement.style.display = 'block';
+      this.pauseBtn.nativeElement.style.display = 'none';
+    }
   }
 
   step() {
     const seek = this.sound.seek() || 0;
+
     this.timer = this.formatTime(Math.round(seek));
     this.progress.nativeElement.style.width = `${(((seek / this.sound._duration) * 100) || 0)}%`;
 
@@ -179,7 +210,7 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
   move(event) {
     if (this.sliderDown) {
       const x = event.clientX || event.touches[0].clientX,
-      startX = this.volume.nativeElement.clientWidth * 0.05,
+      startX = this.view.nativeElement.clientWidth * 0.05,
       layerX = x - startX,
       per = Math.min(1, Math.max(0, layerX / parseFloat(this.barEmpty.nativeElement.scrollWidth)));
 
@@ -193,7 +224,7 @@ export class VisualizationComponent implements OnChanges, AfterViewInit, OnDestr
 
     // Update the display on the slider.
     const barWidth = (val * 90) / 100,
-    sliderBtnOffset = this.volume.nativeElement.clientWidth * barWidth + this.volume.nativeElement.clientWidth * 0.05 - 25;
+    sliderBtnOffset = this.view.nativeElement.clientWidth * barWidth + this.view.nativeElement.clientWidth * 0.05 - 25;
 
     this.barFull.nativeElement.style.width = `${(barWidth * 100)}%`;
     this.sliderBtn.nativeElement.style.left = `${sliderBtnOffset}px`;

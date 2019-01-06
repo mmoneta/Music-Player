@@ -8,7 +8,7 @@ import { Album } from '../../../_models/album';
   selector: 'album',
   exportAs: 'album',
   template: `
-    <visualization [track]="track"></visualization>
+    <visualization [src]="src"></visualization>
     <mat-list>
       <mat-list-item *ngFor="let track of (tracks | async)" class="track" (click)="open_track(track.file)">
         <mat-icon mat-list-icon>music_note</mat-icon>
@@ -57,7 +57,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
 
   tracks: Observable<Array<Album>>;
   private tracksSubscription: Subscription;
-  track: string;
+  src: string;
 
   constructor(private albumService: AlbumService) {
     this.tracks = albumService.tracks;
@@ -77,7 +77,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
   }
 
   open_track(name: string): void {
-    this.track = `uploads/${localStorage.getItem('username')}/${localStorage.getItem('album')}/${name}`;
+    this.src = `uploads/${localStorage.getItem('username')}/${localStorage.getItem('album')}/${name}`;
   }
 
   ngOnDestroy() {
