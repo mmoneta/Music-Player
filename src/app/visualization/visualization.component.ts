@@ -7,9 +7,9 @@ import WaveSurfer from 'wavesurfer.js';
   // tslint:disable-next-line:component-selector
   selector: 'visualization',
   templateUrl: './visualization.component.html',
-  styleUrls: ['./visualization.component.scss']
+  styleUrls: ['./visualization.component.scss', './visualization.responsive.component.scss']
 })
-export class VisualizationComponent implements OnChanges, OnInit, OnDestroy {
+export class VisualizationComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() active: boolean;
   @Input() src: string;
@@ -32,12 +32,9 @@ export class VisualizationComponent implements OnChanges, OnInit, OnDestroy {
   @ViewChild('volumeBtn') volumeBtn: ElementRef;
   @ViewChild('volume') volume: ElementRef;
   @ViewChild('sliderBtn') sliderBtn: ElementRef;
-  @ViewChild('bar') bar: ElementRef;
   @ViewChild('barEmpty') barEmpty: ElementRef;
   @ViewChild('barFull') barFull: ElementRef;
   @ViewChild('loading') loading: ElementRef;
-
-  constructor() {}
 
   ngOnInit() {
     this.volumeBtn.nativeElement.addEventListener('click', () => {
@@ -114,7 +111,8 @@ export class VisualizationComponent implements OnChanges, OnInit, OnDestroy {
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
       waveColor: 'violet',
-      progressColor: 'purple'
+      progressColor: 'purple',
+      responsive: true
     });
     this.wavesurfer.load(this.src);
   }
@@ -246,6 +244,7 @@ export class VisualizationComponent implements OnChanges, OnInit, OnDestroy {
     if (this.sound) {
       this.sound.stop();
     }
+
     this.keyboardSubscription.unsubscribe();
   }
 }
