@@ -1,0 +1,31 @@
+<div id="view" #view>
+  <!-- Top Info -->
+  <div id="title">
+    <span id="track"></span>
+    <div id="timer">{{ timer }}</div>
+    <div id="duration">{{ duration }}</div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controlsOuter">
+    <div class="controlsInner">
+      <div id="loading" #loading></div>
+      <div class="btn" id="playBtn" #playBtn (click)="play()"></div>
+      <div class="btn" id="pauseBtn" #pauseBtn (click)="pause()"></div>
+      <div class="btn" id="prevBtn" #prevBtn></div>
+      <div class="btn" id="nextBtn" #nextBtn></div>
+    </div>
+    <div class="btn" id="volumeBtn" #volumeBtn></div>
+  </div>
+
+  <!-- Progress -->
+  <div id="waveform" #waveform></div>
+  <div id="progress" #progress></div>
+
+  <!-- Volume -->
+  <div id="volume" #volume class="fadeout">
+    <div id="barFull" #barFull class="bar"></div>
+    <div id="barEmpty" #barEmpty class="bar"></div>
+    <div id="sliderBtn" #sliderBtn></div>
+  </div>
+</div>

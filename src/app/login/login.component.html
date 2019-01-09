@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <h2 class="center-block text-center">{{ 'LOGIN.TITLE' | translate }}</h2>
+  </div>
+  <div class="row">
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" novalidate>
+      <div class="form-group col-md-4 col-md-offset-4 col-sm-12">
+        <label for="username">{{ 'LOGIN.USERNAME' | translate }}</label>
+        <input #username type="text" placeholder="{{ 'LOGIN.ENTER-USERNAME' | translate }}" class="form-control" formControlName="username">
+      </div>
+      <div class="form-group col-md-4 col-md-offset-4 col-sm-12">
+        <label for="pwd">{{ 'LOGIN.PASSWORD' | translate }}</label>
+        <input #password type="password" placeholder="{{ 'LOGIN.ENTER-PASSWORD' | translate }}" class="form-control" formControlName="password">
+      </div>
+      <div class="form-group col-md-4 col-md-offset-4 col-sm-12">
+        <mat-card class="result">
+          <mat-slide-toggle [color]="accent" [checked]="false" [disabled]="false">{{ 'LOGIN.REMEMBER' | translate }}</mat-slide-toggle>
+        </mat-card>
+      </div>
+      <div class="col-md-4 col-md-offset-4 col-sm-12">
+        <button type="submit" class="btn btn-default send">{{ 'LOGIN.SUBMIT' | translate }}</button>
+      </div>
+    </form>
+    <div class="col-md-4 col-md-offset-4  col-sm-12 text-center breakline">
+      <a href="/register">{{ 'LOGIN.MESSAGE' | translate }}</a>
+    </div>
+  </div>
+  <simple-notifications></simple-notifications>
+</div>

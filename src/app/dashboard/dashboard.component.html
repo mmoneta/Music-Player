@@ -1,0 +1,42 @@
+<div>
+  <div class="container">
+    <mat-toolbar>
+      <span>{{ 'DASHBOARD.TITLE' | translate }}</span>
+		  <button mat-icon-button (click)="snav.toggle()">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </mat-toolbar>
+  </div>
+  <mat-sidenav-container>
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list>
+        <ul class="list-unstyled">
+          <li mat-list-item (click)="open_creator()">{{ 'DASHBOARD.CREATOR' | translate }}</li>
+          <li mat-list-item (click)="open_uploader()">{{ 'DASHBOARD.UPLOAD' | translate }}</li>
+          <li mat-list-item (click)="open_settings()">{{ 'DASHBOARD.SETTINGS' | translate }}</li>
+          <li mat-list-item (click)="open_helper()">{{ 'DASHBOARD.HELP' | translate }}</li>
+          <li mat-list-item (click)="logout()">{{ 'DASHBOARD.LOGOUT' | translate }}</li>
+        </ul>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="container">
+        <div fxLayout="row" fxLayoutAlign="center center" class="content">
+          <mat-card class="card">
+            <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+              <albums-header *ngIf="view === 'albums'"></albums-header>
+              <album-header *ngIf="view === 'album'" (onListedOfAlbums)="onListedOfAlbums()"></album-header>
+            </mat-card-title>
+            <mat-card-content>
+              <albums *ngIf="view === 'albums'" [(length)]="length" [pageSize]="pageSize" [pageIndex]="currentPage" (onAlbumSelect)="onAlbumSelect($event)"></albums>
+              <album *ngIf="view === 'album'" [(length)]="length" [pageSize]="pageSize" [pageIndex]="currentPage"></album>
+            </mat-card-content>
+            <mat-card-footer>
+              <mat-paginator #paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="[10,15,25]" [pageIndex]="currentPage" (page)="pageEvent = handlePaginator($event)"></mat-paginator>
+            </mat-card-footer>
+          </mat-card>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
